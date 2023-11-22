@@ -48,4 +48,8 @@ public class Receita {
         this.valor = dto.valor();
         this.data = dto.data();
     }
+
+    public void exclusaoLogica() {
+        this.ativo = false;
+    }
 }

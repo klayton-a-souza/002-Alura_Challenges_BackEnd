@@ -72,6 +72,16 @@ public class ReceitaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
+    @DeleteMapping("{id_receita}")
+    @Transactional
+    public ResponseEntity exclusaoLogica(@PathVariable Long id_receita){
+        try {
+            receitaService.exclusaoLogica(id_receita);
+            return ResponseEntity.noContent().build();
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
 
 
 }

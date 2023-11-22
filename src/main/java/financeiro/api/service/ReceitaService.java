@@ -55,7 +55,11 @@ public class ReceitaService {
         receita.total(dto);
         return receita;
     }
-
+    public void exclusaoLogica(Long id_receita) {
+        validar(id_receita);
+        Receita receita = receitaRepository.getReferenceById(id_receita);
+        receita.exclusaoLogica();
+    }
     private void validar(Long id_receita) {
         if(!receitaRepository.existsById(id_receita)){
             throw new ValidacaoException("Não foi possivel encontra uma receita com esse id: " + id_receita);
