@@ -49,11 +49,19 @@ public class ReceitaService {
         receita.parcial(dto);
         return receita;
     }
+    public Receita total(AtualizacaoReceitaDto dto) {
+        validar(dto.id_receita());
+        Receita receita = receitaRepository.getReferenceById(dto.id_receita());
+        receita.total(dto);
+        return receita;
+    }
+
     private void validar(Long id_receita) {
         if(!receitaRepository.existsById(id_receita)){
             throw new ValidacaoException("Não foi possivel encontra uma receita com esse id: " + id_receita);
         }
     }
+
 
 
 }

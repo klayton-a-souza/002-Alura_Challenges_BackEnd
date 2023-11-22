@@ -32,7 +32,6 @@ public class Receita {
         this.data =dto.data();
         this.ativo = true;
     }
-
     public void parcial(AtualizacaoReceitaDto dto) {
         if(dto.descricao() != null){
             this.descricao = dto.descricao();
@@ -43,5 +42,10 @@ public class Receita {
         if(dto.data() != null){
             this.data = dto.data();
         }
+    }
+    public void total(AtualizacaoReceitaDto dto) {
+        this.descricao = dto.descricao();
+        this.valor = dto.valor();
+        this.data = dto.data();
     }
 }

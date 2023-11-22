@@ -52,7 +52,6 @@ public class ReceitaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
-
     @PatchMapping
     @Transactional
     public ResponseEntity parcial(@RequestBody @Valid AtualizacaoReceitaDto dto){
@@ -63,5 +62,16 @@ public class ReceitaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
+    @PutMapping
+    @Transactional
+    public ResponseEntity total(@RequestBody @Valid AtualizacaoReceitaDto dto){
+        try {
+            Receita receitaAtualizada = receitaService.total(dto);
+            return ResponseEntity.ok(new AtualizacaoReceitaDto(receitaAtualizada));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
 
 }
