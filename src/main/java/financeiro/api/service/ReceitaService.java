@@ -1,11 +1,13 @@
 package financeiro.api.service;
 
+import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.Receita;
 import financeiro.api.repository.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,9 +42,18 @@ public class ReceitaService {
         validar(id_receita);
         return receitaRepository.getReferenceById(id_receita);
     }
+
+    public Receita parcial(AtualizacaoReceitaDto dto) {
+        validar(dto.id_receita());
+        Receita receita = receitaRepository.getReferenceById(dto.id_receita());
+        receita.parcial(dto);
+        return receita;
+    }
     private void validar(Long id_receita) {
         if(!receitaRepository.existsById(id_receita)){
             throw new ValidacaoException("Não foi possivel encontra uma receita com esse id: " + id_receita);
         }
     }
+
+
 }

@@ -1,5 +1,6 @@
 package financeiro.api.controller;
 
+import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.Receita;
@@ -47,6 +48,17 @@ public class ReceitaController {
         try {
             Receita receitaDetalhada = receitaService.detalhar(id_receita);
             return ResponseEntity.ok(new ReceitaDto(receitaDetalhada));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @PatchMapping
+    @Transactional
+    public ResponseEntity parcial(@RequestBody @Valid AtualizacaoReceitaDto dto){
+        try {
+            Receita receitaAtualizada = receitaService.parcial(dto);
+            return ResponseEntity.ok(new AtualizacaoReceitaDto(receitaAtualizada));
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }

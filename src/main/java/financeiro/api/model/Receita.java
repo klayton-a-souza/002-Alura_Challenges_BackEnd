@@ -1,5 +1,6 @@
 package financeiro.api.model;
 
+import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,17 @@ public class Receita {
         this.valor = dto.valor();
         this.data =dto.data();
         this.ativo = true;
+    }
+
+    public void parcial(AtualizacaoReceitaDto dto) {
+        if(dto.descricao() != null){
+            this.descricao = dto.descricao();
+        }
+        if(dto.valor() != null){
+            this.valor = dto.valor();
+        }
+        if(dto.data() != null){
+            this.data = dto.data();
+        }
     }
 }
