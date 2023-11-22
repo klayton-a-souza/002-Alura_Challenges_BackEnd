@@ -1,12 +1,12 @@
 package financeiro.api.dto.receita;
 
-import jakarta.validation.constraints.NotBlank;
+import financeiro.api.model.Receita;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record CadastrarReceitaDto(
+public record ReceitaDto(
         Long id_receita,
         @NotNull
         String descricao,
@@ -15,4 +15,8 @@ public record CadastrarReceitaDto(
         @NotNull
         LocalDateTime data,
         Boolean ativo) {
+
+        public ReceitaDto(Receita receita){
+                this(receita.getId_receita(), receita.getDescricao(), receita.getValor(),receita.getData(),receita.getAtivo());
+        }
 }

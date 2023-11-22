@@ -1,6 +1,6 @@
 package financeiro.api.model;
 
-import financeiro.api.dto.receita.CadastrarReceitaDto;
+import financeiro.api.dto.receita.ReceitaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class Receita {
     private LocalDateTime data;
     private Boolean ativo;
 
-    public Receita(CadastrarReceitaDto dto) {
+    public Receita(ReceitaDto dto) {
         this.descricao = dto.descricao();
         this.valor = dto.valor();
         this.data =dto.data();
