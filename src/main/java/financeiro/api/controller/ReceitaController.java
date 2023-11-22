@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,6 +39,16 @@ public class ReceitaController {
     public ResponseEntity<List<ReceitaDto>> listar(@PageableDefault (size = 5) Pageable paginacao){
         List<ReceitaDto> receitas = receitaService.listar(paginacao);
         return ResponseEntity.ok(receitas);
+    }
+
+    @GetMapping("{id_receita}")
+    public ResponseEntity detalhar(@PathVariable Long id_receita){
+        try {
+            Receita receitaDetalhada = receitaService.detalhar(id_receita);
+            return ResponseEntity.ok(new ReceitaDto(receitaDetalhada));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

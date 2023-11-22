@@ -29,12 +29,20 @@ public class ReceitaService {
             }
         }
     }
-
     public List<ReceitaDto> listar(Pageable paginacao) {
         return receitaRepository
                 .findAll(paginacao)
                 .stream()
                 .map(ReceitaDto::new)
                 .toList();
+    }
+    public Receita detalhar(Long id_receita) {
+        validar(id_receita);
+        return receitaRepository.getReferenceById(id_receita);
+    }
+    private void validar(Long id_receita) {
+        if(!receitaRepository.existsById(id_receita)){
+            throw new ValidacaoException("Não foi possivel encontra uma receita com esse id: " + id_receita);
+        }
     }
 }
