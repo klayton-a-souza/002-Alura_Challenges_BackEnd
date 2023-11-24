@@ -1,5 +1,6 @@
 package financeiro.api.model.despesa;
 
+import financeiro.api.dto.despesa.AtualizacaoDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,5 +39,20 @@ public class Despesa {
 
     public void exclusaoLogica() {
         this.ativo = false;
+    }
+
+    public void parcial(AtualizacaoDespesaDto dto) {
+        if(dto.descricao() != null){
+            this.descricao = dto.descricao();
+        }
+        if(dto.valor() != null){
+            this.valor = dto.valor();
+        }
+        if(dto.data() != null){
+            this.data = dto.data();
+        }
+        if(dto.tipo() != null){
+            this.tipo = dto.tipo();
+        }
     }
 }

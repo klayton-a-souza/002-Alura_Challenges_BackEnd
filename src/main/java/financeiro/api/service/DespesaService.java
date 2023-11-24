@@ -1,5 +1,6 @@
 package financeiro.api.service;
 
+import financeiro.api.dto.despesa.AtualizacaoDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Despesa;
@@ -33,6 +34,13 @@ public class DespesaService {
         return despesaRepository.getReferenceById(id_despesa);
     }
 
+    public Despesa parcial(AtualizacaoDespesaDto dto) {
+        validar(dto.id_despesa());
+        Despesa despesa = despesaRepository.getReferenceById(dto.id_despesa());
+        despesa.parcial(dto);
+        return despesa;
+    }
+
     private void validar(Long id_despesa) {
         if(!despesaRepository.existsById(id_despesa)){
             throw new ValidacaoException("Não foi possivel encontrar uma despesa com esse id: " + id_despesa);
@@ -52,4 +60,6 @@ public class DespesaService {
             }
         }
     }
+
+
 }

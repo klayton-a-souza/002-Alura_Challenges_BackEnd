@@ -1,5 +1,6 @@
 package financeiro.api.controller;
 
+import financeiro.api.dto.despesa.AtualizacaoDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Despesa;
@@ -45,6 +46,17 @@ public class DespesaController {
         try {
             Despesa despesaDetalhada = despesaService.detalhar(id_despesa);
             return ResponseEntity.ok(new DespesaDto(despesaDetalhada));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @PatchMapping
+    @Transactional
+    public ResponseEntity parcial(@RequestBody @Valid AtualizacaoDespesaDto dto){
+        try {
+            Despesa despesaAtualizada = despesaService.parcial(dto);
+            return ResponseEntity.ok(new AtualizacaoDespesaDto(despesaAtualizada));
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
