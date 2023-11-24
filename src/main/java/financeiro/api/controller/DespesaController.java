@@ -74,6 +74,17 @@ public class DespesaController {
         }
     }
 
+    @DeleteMapping("{id_despesa}")
+    @Transactional
+    public ResponseEntity exlusaoLogica(@PathVariable Long id_despesa){
+        try {
+            despesaService.exclusaoLogica(id_despesa);
+            return ResponseEntity.noContent().build();
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
 
 
 }

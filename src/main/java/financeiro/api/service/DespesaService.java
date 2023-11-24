@@ -47,6 +47,12 @@ public class DespesaService {
         return despesa;
     }
 
+    public void exclusaoLogica(Long id_despesa) {
+        validar(id_despesa);
+        Despesa despesa = despesaRepository.getReferenceById(id_despesa);
+        despesa.exclusaoLogica();
+    }
+
     private void validar(Long id_despesa) {
         if(!despesaRepository.existsById(id_despesa)){
             throw new ValidacaoException("Não foi possivel encontrar uma despesa com esse id: " + id_despesa);
@@ -66,7 +72,4 @@ public class DespesaService {
             }
         }
     }
-
-
-
 }
