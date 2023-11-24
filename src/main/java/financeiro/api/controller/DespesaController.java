@@ -7,12 +7,13 @@ import financeiro.api.service.DespesaService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/despesas")
@@ -33,4 +34,10 @@ public class DespesaController {
         }
 
     }
+    @GetMapping
+    public ResponseEntity<List<DespesaDto>> listarDespesas(@PageableDefault (size = 5) Pageable paginacao){
+        List<DespesaDto> listaDeTodasDespesas = despesaService.listar(paginacao);
+        return ResponseEntity.ok(listaDeTodasDespesas);
+    }
+
 }

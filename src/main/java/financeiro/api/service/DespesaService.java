@@ -5,9 +5,11 @@ import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Despesa;
 import financeiro.api.repository.DespesaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +33,9 @@ public class DespesaService {
                 throw new ValidacaoException("A API não permiti o cadsatrao de despesas duplicaads(contendo a mesma descricao, dentro do mesmo mês)");
             }
         }
+    }
+
+    public List<DespesaDto> listar(Pageable paginacao) {
+        return despesaRepository.findAllByAtivoTrue(paginacao).stream().map(DespesaDto::new).toList();
     }
 }

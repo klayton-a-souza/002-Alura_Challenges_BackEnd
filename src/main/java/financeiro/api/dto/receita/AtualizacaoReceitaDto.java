@@ -1,6 +1,6 @@
 package financeiro.api.dto.receita;
 
-import financeiro.api.model.Receita;
+import financeiro.api.model.receita.Receita;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

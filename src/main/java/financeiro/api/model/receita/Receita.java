@@ -1,4 +1,4 @@
-package financeiro.api.model;
+package financeiro.api.model.receita;
 
 import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;

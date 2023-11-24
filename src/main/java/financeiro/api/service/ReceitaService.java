@@ -3,11 +3,10 @@ package financeiro.api.service;
 import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.exception.ValidacaoException;
-import financeiro.api.model.Receita;
+import financeiro.api.model.receita.Receita;
 import financeiro.api.repository.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

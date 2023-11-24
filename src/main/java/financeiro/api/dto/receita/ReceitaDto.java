@@ -1,6 +1,6 @@
 package financeiro.api.dto.receita;
 
-import financeiro.api.model.Receita;
+import financeiro.api.model.receita.Receita;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
