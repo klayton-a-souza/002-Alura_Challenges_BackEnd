@@ -1,6 +1,7 @@
 package financeiro.api.controller;
 
-import financeiro.api.dto.despesa.AtualizacaoDespesaDto;
+import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
+import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Despesa;
@@ -53,10 +54,21 @@ public class DespesaController {
 
     @PatchMapping
     @Transactional
-    public ResponseEntity parcial(@RequestBody @Valid AtualizacaoDespesaDto dto){
+    public ResponseEntity parcial(@RequestBody @Valid AtualizacaoPacialDespesaDto dto){
         try {
             Despesa despesaAtualizada = despesaService.parcial(dto);
-            return ResponseEntity.ok(new AtualizacaoDespesaDto(despesaAtualizada));
+            return ResponseEntity.ok(new AtualizacaoPacialDespesaDto(despesaAtualizada));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity total(@RequestBody @Valid AtualizacaoTotalDespesaDto dto){
+        try {
+            Despesa despesaAtualizada = despesaService.total(dto);
+            return ResponseEntity.ok(new AtualizacaoTotalDespesaDto(despesaAtualizada));
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }

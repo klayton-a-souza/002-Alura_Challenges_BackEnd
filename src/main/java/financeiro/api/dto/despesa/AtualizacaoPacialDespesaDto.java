@@ -7,14 +7,14 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record AtualizacaoDespesaDto(
+public record AtualizacaoPacialDespesaDto(
         @NotNull
         Long id_despesa,
         String descricao,
         BigDecimal valor,
         LocalDateTime data,
         Tipo tipo) {
-    public AtualizacaoDespesaDto(Despesa despesaAtualizada) {
+    public AtualizacaoPacialDespesaDto(Despesa despesaAtualizada) {
         this(despesaAtualizada.getId_despesa(),despesaAtualizada.getDescricao(),despesaAtualizada.getValor(),despesaAtualizada.getData(),despesaAtualizada.getTipo());
     }
 }

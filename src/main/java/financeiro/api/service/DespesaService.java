@@ -1,6 +1,7 @@
 package financeiro.api.service;
 
-import financeiro.api.dto.despesa.AtualizacaoDespesaDto;
+import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
+import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Despesa;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +34,16 @@ public class DespesaService {
         return despesaRepository.getReferenceById(id_despesa);
     }
 
-    public Despesa parcial(AtualizacaoDespesaDto dto) {
+    public Despesa parcial(AtualizacaoPacialDespesaDto dto) {
         validar(dto.id_despesa());
         Despesa despesa = despesaRepository.getReferenceById(dto.id_despesa());
         despesa.parcial(dto);
+        return despesa;
+    }
+    public Despesa total(AtualizacaoTotalDespesaDto dto) {
+        validar(dto.id_despesa());
+        Despesa despesa = despesaRepository.getReferenceById(dto.id_despesa());
+        despesa.total(dto);
         return despesa;
     }
 
@@ -60,6 +66,7 @@ public class DespesaService {
             }
         }
     }
+
 
 
 }
