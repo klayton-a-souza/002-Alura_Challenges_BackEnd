@@ -17,6 +17,6 @@ public record ReceitaDto(
         Boolean ativo) {
 
         public ReceitaDto(Receita receita){
-                this(receita.getId_receita(), receita.getDescricao(), receita.getValor(),receita.getData(),receita.getAtivo());
+                this(receita.getId_receita(), receita.getDescricao(), receita.getValor(),receita.getData(), receita.getAtivo());
         }
 }

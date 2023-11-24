@@ -16,9 +16,10 @@ public record DespesaDto(
         @NotNull
         LocalDateTime data,
         @NotNull
-        Tipo tipo) {
+        Tipo tipo,
+        Boolean ativo) {
 
         public DespesaDto(Despesa despesa){
-                this(despesa.getId_despesa(), despesa.getDescricao(), despesa.getValor(),despesa.getData(),despesa.getTipo());
+                this(despesa.getId_despesa(), despesa.getDescricao(), despesa.getValor(),despesa.getData(),despesa.getTipo(),despesa.getAtivo());
         }
 }

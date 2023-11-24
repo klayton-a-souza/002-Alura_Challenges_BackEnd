@@ -32,7 +32,7 @@ public class ReceitaService {
     }
     public List<ReceitaDto> listar(Pageable paginacao) {
         return receitaRepository
-                .findAll(paginacao)
+                .findAllByAtivoTrue(paginacao)
                 .stream()
                 .map(ReceitaDto::new)
                 .toList();
