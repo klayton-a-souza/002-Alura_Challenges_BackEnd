@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -39,5 +40,16 @@ public class DespesaController {
         List<DespesaDto> listaDeTodasDespesas = despesaService.listar(paginacao);
         return ResponseEntity.ok(listaDeTodasDespesas);
     }
+    @GetMapping("{id_despesa}")
+    public ResponseEntity detalhar(@PathVariable Long id_despesa){
+        try {
+            Despesa despesaDetalhada = despesaService.detalhar(id_despesa);
+            return ResponseEntity.ok(new DespesaDto(despesaDetalhada));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+
 
 }

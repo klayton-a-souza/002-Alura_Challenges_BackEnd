@@ -35,4 +35,8 @@ public class Despesa {
         this.ativo = true;
         this.tipo = dto.tipo();
     }
+
+    public void exclusaoLogica() {
+        this.ativo = false;
+    }
 }
