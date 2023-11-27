@@ -3,6 +3,7 @@ package financeiro.api.service;
 import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
 import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
+import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Categoria;
 import financeiro.api.model.despesa.Despesa;
@@ -33,8 +34,17 @@ public class DespesaService {
         return new Despesa(dto.id_despesa(),dto.descricao(),dto.valor(),dto.data(),true,Categoria.Outras);
     }
 
-    public List<DespesaDto> listar(Pageable paginacao) {
-        return despesaRepository.findAllByAtivoTrue(paginacao).stream().map(DespesaDto::new).toList();
+    public List<DespesaDto> listar(Pageable paginacao, String descricao) {
+        if((descricao != null) && (!descricao.isEmpty())){
+            List<DespesaDto> despesas = despesaRepository.buscarPelaDescricao(paginacao,descricao).stream().toList();
+            if(despesas.isEmpty()){
+                throw new ValidacaoException("Não foi encontrado nenhuma despesa com essa descrição");
+            }
+            return despesas;
+        }
+        else {
+            return despesaRepository.findAllByAtivoTrue(paginacao).stream().map(DespesaDto::new).toList();
+        }
     }
 
     public Despesa detalhar(Long id_despesa) {

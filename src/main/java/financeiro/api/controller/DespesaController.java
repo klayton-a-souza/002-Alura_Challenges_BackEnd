@@ -38,9 +38,12 @@ public class DespesaController {
 
     }
     @GetMapping
-    public ResponseEntity<List<DespesaDto>> listarDespesas(@PageableDefault (size = 5) Pageable paginacao){
-        List<DespesaDto> listaDeTodasDespesas = despesaService.listar(paginacao);
-        return ResponseEntity.ok(listaDeTodasDespesas);
+    public ResponseEntity<List<DespesaDto>> listarDespesas(@PageableDefault (size = 5) Pageable paginacao, @RequestParam (required = false) String descricao){
+        try {
+            return ResponseEntity.ok(despesaService.listar(paginacao,descricao));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("{id_despesa}")
     public ResponseEntity detalhar(@PathVariable Long id_despesa){
