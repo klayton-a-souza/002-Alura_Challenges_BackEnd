@@ -1,7 +1,7 @@
 package financeiro.api.dto.despesa;
 
+import financeiro.api.model.despesa.Categoria;
 import financeiro.api.model.despesa.Despesa;
-import financeiro.api.model.despesa.Tipo;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -13,8 +13,8 @@ public record AtualizacaoPacialDespesaDto(
         String descricao,
         BigDecimal valor,
         LocalDateTime data,
-        Tipo tipo) {
+        Categoria categoria) {
     public AtualizacaoPacialDespesaDto(Despesa despesaAtualizada) {
-        this(despesaAtualizada.getId_despesa(),despesaAtualizada.getDescricao(),despesaAtualizada.getValor(),despesaAtualizada.getData(),despesaAtualizada.getTipo());
+        this(despesaAtualizada.getId_despesa(),despesaAtualizada.getDescricao(),despesaAtualizada.getValor(),despesaAtualizada.getData(),despesaAtualizada.getCategoria());
     }
 }

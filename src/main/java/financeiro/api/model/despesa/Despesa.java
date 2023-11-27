@@ -28,14 +28,22 @@ public class Despesa {
     private Boolean ativo;
 
     @Enumerated(EnumType.STRING)
-    private Tipo tipo;
+    private Categoria categoria;
 
     public Despesa(DespesaDto dto) {
         this.descricao = dto.descricao();
         this.valor = dto.valor();
         this.data = dto.data();
         this.ativo = true;
-        this.tipo = dto.tipo();
+        this.categoria = dto.categoria();
+    }
+
+    public Despesa(DespesaDto dto, Categoria categoria) {
+        this.descricao = dto.descricao();
+        this.valor = dto.valor();
+        this.data = dto.data();
+        this.ativo = true;
+        this.categoria = categoria;
     }
 
     public void exclusaoLogica() {
@@ -52,8 +60,8 @@ public class Despesa {
         if(dto.data() != null){
             this.data = dto.data();
         }
-        if(dto.tipo() != null){
-            this.tipo = dto.tipo();
+        if(dto.categoria() != null){
+            this.categoria = dto.categoria();
         }
     }
 
@@ -61,6 +69,6 @@ public class Despesa {
         this.descricao = dto.descricao();
         this.valor = dto.valor();
         this.data = dto.data();
-        this.tipo = dto.tipo();
+        this.categoria = dto.categoria();
     }
 }
