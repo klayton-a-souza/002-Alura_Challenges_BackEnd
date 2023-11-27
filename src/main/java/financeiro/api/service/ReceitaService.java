@@ -30,12 +30,16 @@ public class ReceitaService {
             }
         }
     }
-    public List<ReceitaDto> listar(Pageable paginacao) {
-        return receitaRepository
-                .findAllByAtivoTrue(paginacao)
-                .stream()
-                .map(ReceitaDto::new)
-                .toList();
+    public List<ReceitaDto> listar(Pageable paginacao,String descricao) {
+        if((descricao !=null) && (!descricao.isEmpty())){
+            List<ReceitaDto> receitas = receitaRepository.buscarPelaDescricao(paginacao,descricao).stream().toList();
+            if(receitas.isEmpty()){
+                throw new ValidacaoException("Não foi encontrado nenhuma receitacom essa descrição");
+            }
+            return receitas;
+        }else {
+            return receitaRepository.findAllByAtivoTrue(paginacao).stream().map(ReceitaDto::new).toList();
+        }
     }
     public Receita detalhar(Long id_receita) {
         validar(id_receita);

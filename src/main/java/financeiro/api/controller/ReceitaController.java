@@ -37,9 +37,13 @@ public class ReceitaController {
         }
     }
     @GetMapping
-    public ResponseEntity<List<ReceitaDto>> listar(@PageableDefault (size = 5) Pageable paginacao){
-        List<ReceitaDto> receitas = receitaService.listar(paginacao);
-        return ResponseEntity.ok(receitas);
+    public ResponseEntity<List<ReceitaDto>> listar(@PageableDefault (size = 5) Pageable paginacao, @RequestParam (required = false) String descricao){
+        try {
+            return ResponseEntity.ok(receitaService.listar(paginacao,descricao));
+        }catch (ValidacaoException exception){
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @GetMapping("{id_receita}")
