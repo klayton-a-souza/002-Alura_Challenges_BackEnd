@@ -1,5 +1,6 @@
 package financeiro.api.repository;
 
+import financeiro.api.dto.despesa.DespesaDataDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.model.despesa.Despesa;
 import org.springframework.data.domain.Page;
@@ -26,4 +27,13 @@ public interface DespesaRepository extends JpaRepository<Despesa,Long> {
             """)
     Page<DespesaDto> buscarPelaDescricao(Pageable paginacao, String descricao);
 
+    @Query(
+            """
+            SELECT d FROM Despesa d
+            WHERE
+            MONTH(d.data) = :mes
+            AND
+            YEAR(d.data) = :ano
+            """)
+    List<DespesaDataDto> listarPelaData(int ano, int mes);
 }

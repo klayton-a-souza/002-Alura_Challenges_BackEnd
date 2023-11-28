@@ -2,6 +2,7 @@ package financeiro.api.service;
 
 import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
 import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
+import financeiro.api.dto.despesa.DespesaDataDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.exception.ValidacaoException;
@@ -87,5 +88,13 @@ public class DespesaService {
             }
 
         }
+    }
+
+    public List<DespesaDataDto> listarPelaData(int ano, int mes) {
+        List<DespesaDataDto> lista = despesaRepository.listarPelaData(ano,mes);
+        if(lista.isEmpty()){
+            throw new ValidacaoException("Não foi possivel encontrar nenhuma despesa no banco de dados com essa data!");
+        }
+        return lista;
     }
 }

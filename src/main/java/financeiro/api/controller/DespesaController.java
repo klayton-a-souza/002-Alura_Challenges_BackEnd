@@ -2,6 +2,7 @@ package financeiro.api.controller;
 
 import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
 import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
+import financeiro.api.dto.despesa.DespesaDataDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Despesa;
@@ -83,6 +84,16 @@ public class DespesaController {
         try {
             despesaService.exclusaoLogica(id_despesa);
             return ResponseEntity.noContent().build();
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/{ano}/{mes}/")
+    public ResponseEntity listarPelaDta(@PathVariable int ano, @PathVariable int mes){
+        try {
+            List<DespesaDataDto>  despesaDataDtos = despesaService.listarPelaData(ano,mes);
+            return ResponseEntity.ok(despesaDataDtos);
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
