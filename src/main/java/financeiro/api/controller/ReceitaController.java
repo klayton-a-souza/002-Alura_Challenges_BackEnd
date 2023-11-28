@@ -2,6 +2,7 @@ package financeiro.api.controller;
 
 import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
+import financeiro.api.dto.receita.ReceitaMesDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.receita.Receita;
 import financeiro.api.service.ReceitaService;
@@ -84,6 +85,16 @@ public class ReceitaController {
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
+    }
+    @GetMapping("/{ano}/{mes}/")
+    public ResponseEntity listarPorMes(@PathVariable  int ano,@PathVariable int mes){
+        try {
+            List<ReceitaMesDto> receitaMesDtos = receitaService.listarMes(ano,mes);
+            return ResponseEntity.ok(receitaMesDtos);
+        }catch (ValidacaoException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+
     }
 
 

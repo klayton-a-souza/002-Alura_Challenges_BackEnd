@@ -2,6 +2,7 @@ package financeiro.api.service;
 
 import financeiro.api.dto.receita.AtualizacaoReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
+import financeiro.api.dto.receita.ReceitaMesDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.receita.Receita;
 import financeiro.api.repository.ReceitaRepository;
@@ -70,5 +71,11 @@ public class ReceitaService {
     }
 
 
-
+    public List<ReceitaMesDto> listarMes(int ano, int mes) {
+        List<ReceitaMesDto> lista = receitaRepository.listarPorMesEAno(ano,mes);
+        if(lista.isEmpty()){
+            throw new ValidacaoException("Não foi possivel encontrar nenhuma receita no banco de dados nessa data!");
+        }
+        return lista;
+    }
 }
