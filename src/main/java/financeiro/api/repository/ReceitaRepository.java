@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,15 @@ public interface ReceitaRepository extends JpaRepository<Receita,Long> {
             year(r.data) = :ano
             """)
     List<ReceitaMesDto> listarPorMesEAno(int ano, int mes);
+
+    @Query(
+            """
+            SELECT SUM(r.valor) FROM Receita r
+            WHERE
+            MONTH(r.data) = :mes
+            AND
+            YEAR(r.data) = :ano
+            """)
+    BigDecimal receitaDoMes(int ano, int mes);
 
 }
