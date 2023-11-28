@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ResumoService {
@@ -22,15 +26,19 @@ public class ResumoService {
         BigDecimal despesaTotal= despesaRepository.despesaDoMes(ano,mes);
         BigDecimal saldo = receitaTotal.subtract(despesaTotal);
 
-        BigDecimal alimentacao = despesaRepository.totalCategoria(ano,mes, Categoria.Alimentação);
-        BigDecimal saude = despesaRepository.totalCategoria(ano,mes,Categoria.Saúde);
-        BigDecimal moradia = despesaRepository.totalCategoria(ano,mes,Categoria.Moradia);
-        BigDecimal transporte = despesaRepository.totalCategoria(ano,mes,Categoria.Trasnporte);
-        BigDecimal educacao = despesaRepository.totalCategoria(ano,mes,Categoria.Educação);
-        BigDecimal lazer = despesaRepository.totalCategoria(ano,mes,Categoria.Lazer);
-        BigDecimal imprevistos = despesaRepository.totalCategoria(ano,mes,Categoria.Imprevistos);
-        BigDecimal outras = despesaRepository.totalCategoria(ano,mes,Categoria.Outras);
-        return new ResumoDto(receitaTotal,despesaTotal,saldo,alimentacao,saude,moradia,transporte,educacao,lazer,imprevistos,outras);
+        List<Categoria> categorias = Arrays.asList(Categoria.Alimentação,Categoria.Saúde,Categoria.Moradia,Categoria.Trasnporte,Categoria.Educação,Categoria.Lazer,Categoria.Imprevistos,Categoria.Outras);
+        List<BigDecimal> valores = new ArrayList<>();
+
+        for (int i = 0; i < categorias.size(); i++) {
+            BigDecimal total = despesaRepository.totalCategoria(ano,mes,categorias.get(i));
+
+            if(total == null){
+                valores.add(BigDecimal.ZERO);
+            }else {
+                valores.add(total);
+            }
+        }
+        return new ResumoDto(receitaTotal,despesaTotal,saldo,valores.get(0),valores.get(1),valores.get(2),valores.get(3),valores.get(4),valores.get(5),valores.get(6),valores.get(7));
 
 
     }
