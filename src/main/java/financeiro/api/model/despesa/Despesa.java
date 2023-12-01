@@ -5,6 +5,7 @@ import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-
+@EqualsAndHashCode(of = "id_despesa")
 public class Despesa {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +45,14 @@ public class Despesa {
         this.data = dto.data();
         this.ativo = true;
         this.categoria = categoria;
+    }
+
+    public Despesa(Despesa despesaDetalhada) {
+        this.descricao = despesaDetalhada.getDescricao();
+        this.valor = despesaDetalhada.getValor();
+        this.data = despesaDetalhada.data;
+        this.ativo = true;
+        this.categoria = despesaDetalhada.categoria;
     }
 
     public void exclusaoLogica() {

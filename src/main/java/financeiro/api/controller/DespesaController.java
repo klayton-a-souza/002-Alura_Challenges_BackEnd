@@ -46,6 +46,7 @@ public class DespesaController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("{id_despesa}")
     public ResponseEntity detalhar(@PathVariable Long id_despesa){
         try {

@@ -50,7 +50,11 @@ public class DespesaService {
 
     public Despesa detalhar(Long id_despesa) {
         validar(id_despesa);
-        return despesaRepository.getReferenceById(id_despesa);
+        Despesa despesa = despesaRepository.getReferenceById(id_despesa);
+        if(despesa == null){
+            throw new ValidacaoException("Despesa null");
+        }
+        return despesa;
     }
 
     public Despesa parcial(AtualizacaoPacialDespesaDto dto) {
