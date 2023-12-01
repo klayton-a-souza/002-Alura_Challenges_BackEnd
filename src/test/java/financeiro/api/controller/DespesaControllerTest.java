@@ -1,12 +1,17 @@
 package financeiro.api.controller;
 
+import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
 import financeiro.api.dto.despesa.DespesaDto;
+import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Categoria;
 import financeiro.api.model.despesa.Despesa;
 import financeiro.api.repository.DespesaRepository;
 import financeiro.api.service.DespesaService;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,9 +27,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -37,10 +43,8 @@ class DespesaControllerTest {
     MockMvc mockMvc;
     @Mock
     private DespesaRepository repository;
-
-    @Mock
-    Despesa despesa;
-
+    @Captor
+    private ArgumentCaptor<Despesa> despesaCaptor;
 
     @Test
     @DisplayName("Deveria retornar 201 para requisições POST para o endereço /despesas")
@@ -109,20 +113,46 @@ class DespesaControllerTest {
 
     @Test
     @DisplayName("Deveria retornar 200 para requisições GET que detalha uma despesa passando o ID")
-    void detalharGet01() throws Exception{
+    void detalharDespesa01() throws Exception{
         Long id_despesa = 1L;
+        when(despesaService.detalhar(id_despesa)).thenReturn(new Despesa(1L,"Teste automatizado",new BigDecimal("200.00"),LocalDateTime.now(),true,Categoria.Lazer));
+
         MockHttpServletResponse response = mockMvc.perform(get("/despesas/{id_despesa}",id_despesa)).andReturn().getResponse();
         assertEquals(200,response.getStatus());
     }
-
-
     @Test
-    void detalhar() throws Exception{
+    @DisplayName("Deveria retornar 404 para requisições de detalhar de uma despesa que não esta cadastrada no banco de dados!")
+    void detalharDespesa02() throws Exception{
+        //Arrange
         Long id_despesa = 1L;
-        mockMvc.perform(get("/despesas/{id_despesa}",id_despesa)).andExpect(status())
+        when(despesaService.detalhar(id_despesa)).thenThrow(ValidacaoException.class);
+        //Act
+        MockHttpServletResponse response = mockMvc.perform(get("/despesas/{id_despesa}",id_despesa)).andReturn().getResponse();
+        //Assert
+        assertEquals(404,response.getStatus());
     }
 
+    @Test
+    void patchDespesa01() throws Exception{
 
+        String json =
+                """
+                {
+                    "id_despesa":1,
+                    "descricao":"LoL"
+                }
+                """;
 
+        AtualizacaoPacialDespesaDto dto = new AtualizacaoPacialDespesaDto(1L,"LoL",null,null,null);
+        Despesa despesa = new Despesa(1L,"LoL",new BigDecimal("70.00"), LocalDateTime.now(),true,Categoria.Lazer);
+        when(despesaService.parcial(dto)).thenReturn(despesa);
 
+        MockHttpServletResponse response = mockMvc.perform(patch("/despesas")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        assertEquals(200,response.getStatus());
+        //mockMvc.perform(patch("/despesas").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
 }

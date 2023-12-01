@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+
 @EqualsAndHashCode(of = "id_despesa")
 public class Despesa {
 
@@ -30,6 +30,25 @@ public class Despesa {
 
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
+
+    public Long getId_despesa() {
+        return id_despesa;
+    }
+    public String getDescricao() {
+        return descricao;
+    }
+    public BigDecimal getValor() {
+        return valor;
+    }
+    public LocalDateTime getData() {
+        return data;
+    }
+    public Boolean getAtivo() {
+        return ativo;
+    }
+    public Categoria getCategoria() {
+        return categoria;
+    }
 
     public Despesa(DespesaDto dto) {
         this.descricao = dto.descricao();
