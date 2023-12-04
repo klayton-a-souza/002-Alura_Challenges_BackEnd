@@ -97,9 +97,9 @@ class DespesaControllerTest {
     @Test
     @DisplayName("Deveria retornar 200 para requisições GET que tentam listar todas as despesas filtrando pela descricao")
     void listarGet02() throws Exception{
-        String descricao = "Salario";
+        String descricao = "Jantar de aniversario";
 
-        MockHttpServletResponse response = mockMvc.perform(get("/despesas?descricao={descricao}/",descricao)).andReturn().getResponse();
+        MockHttpServletResponse response = mockMvc.perform(get("/despesas?descricao={descricao}",descricao)).andReturn().getResponse();
         assertEquals(200,response.getStatus());
     }
     @Test

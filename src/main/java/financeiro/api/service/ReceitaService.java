@@ -1,6 +1,7 @@
 package financeiro.api.service;
 
-import financeiro.api.dto.receita.AtualizacaoReceitaDto;
+import financeiro.api.dto.receita.AtualizacaoParcialReceitaDto;
+import financeiro.api.dto.receita.AtualizacaoTotalReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.dto.receita.ReceitaMesDto;
 import financeiro.api.exception.ValidacaoException;
@@ -42,18 +43,19 @@ public class ReceitaService {
             return receitaRepository.findAllByAtivoTrue(paginacao).stream().map(ReceitaDto::new).toList();
         }
     }
+
     public Receita detalhar(Long id_receita) {
         validar(id_receita);
         return receitaRepository.getReferenceById(id_receita);
     }
 
-    public Receita parcial(AtualizacaoReceitaDto dto) {
+    public Receita parcial(AtualizacaoParcialReceitaDto dto) {
         validar(dto.id_receita());
         Receita receita = receitaRepository.getReferenceById(dto.id_receita());
         receita.parcial(dto);
         return receita;
     }
-    public Receita total(AtualizacaoReceitaDto dto) {
+    public Receita total(AtualizacaoTotalReceitaDto dto) {
         validar(dto.id_receita());
         Receita receita = receitaRepository.getReferenceById(dto.id_receita());
         receita.total(dto);

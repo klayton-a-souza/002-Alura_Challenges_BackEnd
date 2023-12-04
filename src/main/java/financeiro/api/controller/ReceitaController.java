@@ -1,6 +1,7 @@
 package financeiro.api.controller;
 
-import financeiro.api.dto.receita.AtualizacaoReceitaDto;
+import financeiro.api.dto.receita.AtualizacaoParcialReceitaDto;
+import financeiro.api.dto.receita.AtualizacaoTotalReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import financeiro.api.dto.receita.ReceitaMesDto;
 import financeiro.api.exception.ValidacaoException;
@@ -56,22 +57,23 @@ public class ReceitaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
+
     @PatchMapping
     @Transactional
-    public ResponseEntity parcial(@RequestBody @Valid AtualizacaoReceitaDto dto){
+    public ResponseEntity parcial(@RequestBody @Valid AtualizacaoParcialReceitaDto dto){
         try {
             Receita receitaAtualizada = receitaService.parcial(dto);
-            return ResponseEntity.ok(new AtualizacaoReceitaDto(receitaAtualizada));
+            return ResponseEntity.ok(new AtualizacaoParcialReceitaDto(receitaAtualizada));
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
     @PutMapping
     @Transactional
-    public ResponseEntity total(@RequestBody @Valid AtualizacaoReceitaDto dto){
+    public ResponseEntity total(@RequestBody @Valid AtualizacaoTotalReceitaDto dto){
         try {
             Receita receitaAtualizada = receitaService.total(dto);
-            return ResponseEntity.ok(new AtualizacaoReceitaDto(receitaAtualizada));
+            return ResponseEntity.ok(new AtualizacaoTotalReceitaDto(receitaAtualizada));
         }catch (ValidacaoException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
