@@ -4,6 +4,7 @@ import financeiro.api.dto.resumo.ResumoDto;
 import financeiro.api.model.despesa.Categoria;
 import financeiro.api.repository.DespesaRepository;
 import financeiro.api.repository.ReceitaRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Getter
 public class ResumoService {
 
     @Autowired
