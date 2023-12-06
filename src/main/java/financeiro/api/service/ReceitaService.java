@@ -19,6 +19,7 @@ public class ReceitaService {
 
     @Autowired
     private ReceitaRepository receitaRepository;
+
     public Receita cadastrar(ReceitaDto dto) {
         verificarReceitaComMesmaDescricaoNoMesmoMes(dto);
         return receitaRepository.save(new Receita(dto));
