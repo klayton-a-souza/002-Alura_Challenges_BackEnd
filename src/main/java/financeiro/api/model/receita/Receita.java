@@ -5,6 +5,7 @@ import financeiro.api.dto.receita.AtualizacaoTotalReceitaDto;
 import financeiro.api.dto.receita.ReceitaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 
+@EqualsAndHashCode(of = "id_receita")
 public class Receita {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

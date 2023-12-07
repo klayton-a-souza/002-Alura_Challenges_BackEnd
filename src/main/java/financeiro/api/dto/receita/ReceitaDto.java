@@ -2,9 +2,11 @@ package financeiro.api.dto.receita;
 
 import financeiro.api.model.receita.Receita;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 
 public record ReceitaDto(
         Long id_receita,

@@ -84,7 +84,8 @@ class ReceitaServiceTest {
         verify(receitaRepository,never()).save(any());
     }
     @Test
-    void testListarComDescricaoExistente() {
+    @DisplayName("Testando o metodo listar quando uma descrição e enviada como parametro")
+    void listar01() {
         // Configurar dados de teste
         String descricao = "Potter";
         Pageable paginacao = PageRequest.of(0,5);
@@ -110,5 +111,37 @@ class ReceitaServiceTest {
         List<ReceitaDto> lista = receitaService.listar(paginacao,descricao);
 
         assertEquals(lista,receitaDtoList);
+    }
+
+    @Test
+    @DisplayName("Testando o metodo listar quando uma descrição não e enviada como parametro")
+    void listar02() {
+        Pageable paginacao = PageRequest.of(0,5);
+
+        Receita receita01 = new Receita(
+                2L,
+                "Potter",
+                new BigDecimal(50.00),
+                LocalDateTime.now(),
+                true
+        );
+        Receita receita02 = new Receita(
+                3L,
+                "Potter",
+                new BigDecimal(50.00),
+                LocalDateTime.of(2023,10,07,10,0),
+                true
+        );
+
+        List<Receita> resultadoFindAllByAtivoTrue = Arrays.asList(receita01,receita02);
+        when(receitaRepository.findAllByAtivoTrue(paginacao)).thenReturn(new PageImpl<>(resultadoFindAllByAtivoTrue));
+
+        List<ReceitaDto> resultadoListar = receitaService.listar(paginacao,null);
+
+
+        verify(receitaRepository, times(1)).findAllByAtivoTrue(paginacao);
+        assertNotNull(resultadoListar);
+        assertEquals(resultadoFindAllByAtivoTrue.size(), resultadoListar.size());
+
     }
 }
