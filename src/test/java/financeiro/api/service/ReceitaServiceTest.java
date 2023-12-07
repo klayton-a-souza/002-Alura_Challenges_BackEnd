@@ -12,10 +12,15 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.Month;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +36,11 @@ class ReceitaServiceTest {
     private ReceitaRepository receitaRepository;
     @Captor
     private ArgumentCaptor<Receita> receitaCaptor;
+    @Captor
+    private ArgumentCaptor<Page<Receita>> teste;
+    @Mock
+    private ReceitaDto receitaDto;
+
 
     @Test
     @DisplayName("Testa para cadastrar uma receita com sucesso!")
@@ -73,8 +83,32 @@ class ReceitaServiceTest {
 
         verify(receitaRepository,never()).save(any());
     }
+    @Test
+    void testListarComDescricaoExistente() {
+        // Configurar dados de teste
+        String descricao = "Potter";
+        Pageable paginacao = PageRequest.of(0,5);
 
+        ReceitaDto receita01 = new ReceitaDto(
+                2L,
+                "Potter",
+                new BigDecimal(50.00),
+                LocalDateTime.now(),
+                true
+        );
+        ReceitaDto receita02 = new ReceitaDto(
+                3L,
+                "Potter",
+                new BigDecimal(50.00),
+                LocalDateTime.of(2023,10,07,10,0),
+                true
+        );
 
+        List<ReceitaDto> receitaDtoList = Arrays.asList(receita01,receita02);
+        when(receitaRepository.buscarPelaDescricao(paginacao,descricao)).thenReturn(new PageImpl<>(receitaDtoList));
 
+        List<ReceitaDto> lista = receitaService.listar(paginacao,descricao);
 
+        assertEquals(lista,receitaDtoList);
+    }
 }

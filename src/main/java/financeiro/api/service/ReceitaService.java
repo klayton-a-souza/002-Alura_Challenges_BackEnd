@@ -33,6 +33,7 @@ public class ReceitaService {
             }
         }
     }
+
     public List<ReceitaDto> listar(Pageable paginacao,String descricao) {
         if((descricao !=null) && (!descricao.isEmpty())){
             List<ReceitaDto> receitas = receitaRepository.buscarPelaDescricao(paginacao,descricao).stream().toList();
