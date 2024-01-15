@@ -1,5 +1,8 @@
 package financeiro.api.service;
 
+import financeiro.api.dto.despesa.AtualizacaoPacialDespesaDto;
+import financeiro.api.dto.despesa.AtualizacaoTotalDespesaDto;
+import financeiro.api.dto.despesa.DespesaDataDto;
 import financeiro.api.dto.despesa.DespesaDto;
 import financeiro.api.exception.ValidacaoException;
 import financeiro.api.model.despesa.Categoria;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -182,6 +186,113 @@ class DespesaServiceTest {
         verify(despesaRepository,times(1)).existsById(id_despesa);
         verify(despesaRepository,never()).getReferenceById(id_despesa);
     }
+    @Test
+    @DisplayName("Testando se a atualização parcial da despesa esta alterando os valor (Descrição) corretamente")
+    void parcial01(){
+        AtualizacaoPacialDespesaDto dto = new AtualizacaoPacialDespesaDto(
+                1L,
+                "Harry Potter e o Prisioneirode Azkaban",
+                null,
+                null,
+                null);
 
+        Despesa despesa = new Despesa(
+                1L,
+                "Parcial",
+                new BigDecimal(100.00),
+                LocalDateTime.now(),
+                true,
+                Categoria.Lazer);
+        when(despesaRepository.existsById(dto.id_despesa())).thenReturn(true);
+        when(despesaRepository.getReferenceById(dto.id_despesa())).thenReturn(despesa);
 
+        despesaService.parcial(dto);
+
+        assertEquals(despesa.getDescricao(),despesa.getDescricao());
+        assertNotEquals(despesa.getValor(),dto.valor());
+    }
+
+    @Test
+    @DisplayName("Testando se a atualização total da despesa esta alterando os valor corretamente")
+    void total(){
+        AtualizacaoTotalDespesaDto dto = new AtualizacaoTotalDespesaDto(
+                1L,
+                "Harry Potter e o Prisioneirode Azkaban",
+                new BigDecimal(78.50),
+                LocalDateTime.now(),
+                Categoria.Lazer);
+
+        Despesa despesa = new Despesa(
+                1L,
+                "Parcial",
+                new BigDecimal(100.00),
+                LocalDateTime.of(2023,Month.DECEMBER,1,10,10,0),
+                true,
+                Categoria.Outras);
+        when(despesaRepository.existsById(dto.id_despesa())).thenReturn(true);
+        when(despesaRepository.getReferenceById(dto.id_despesa())).thenReturn(despesa);
+
+        despesaService.total(dto);
+
+        assertEquals(despesa.getDescricao(),dto.descricao());
+        assertEquals(despesa.getValor(),dto.valor());
+        assertEquals(despesa.getData(),dto.data());
+        assertEquals(despesa.getCategoria(),dto.categoria());
+    }
+
+    @Test
+    @DisplayName("Verificando se a exclução logica foi executado corretamente, o parametro (ativo) deve ser alterado")
+    void exclusaoLogica(){
+        Long id_despesa = 1L;
+        Despesa despesa = new Despesa(
+                1L,
+                "ExclusaoLogica",
+                new BigDecimal(100.00),
+                LocalDateTime.now(),
+                true,
+                Categoria.Outras);
+
+        when(despesaRepository.existsById(id_despesa)).thenReturn(true);
+        when(despesaRepository.getReferenceById(id_despesa)).thenReturn(despesa);
+
+        despesaService.exclusaoLogica(id_despesa);
+
+        assertEquals(despesa.getAtivo(),false);
+    }
+
+    @Test
+    @DisplayName("Executando um select na tabela de receitas com mes e ano especifico!")
+    void listarPelaData01() {
+        int ano = 2024;
+        int mes = 1;
+
+        DespesaDataDto despesa01 = new DespesaDataDto(
+                "Harry Potter e o Prisioneiro de Azkaban",
+                new BigDecimal(75.80), LocalDateTime.of(2024, Month.JANUARY, 9, 3, 4),
+                Categoria.Lazer);
+        DespesaDataDto despesa02 = new DespesaDataDto(
+                "Harry Potter e a Câmera Secreta",
+                new BigDecimal(75.80), LocalDateTime.of(2023, Month.DECEMBER, 9, 3, 4),
+                Categoria.Lazer);
+        List<DespesaDataDto> listaDespesas = Arrays.asList(despesa01, despesa02);
+        when(despesaRepository.listarPelaData(ano, mes)).thenReturn(listaDespesas);
+
+        despesaService.listarPelaData(ano, mes);
+
+        verify(despesaRepository,times(1)).listarPelaData(ano,mes);
+    }
+
+    @Test
+    @DisplayName("Retornar uma exception pelo fato de que na data especifica não foi encontrado nenhum registro")
+    void listarPelaData02(){
+        int ano = 2024;
+        int mes = 1;
+        when(despesaRepository.listarPelaData(ano,mes)).thenReturn(new ArrayList<>());
+
+        ValidacaoException exception =
+                assertThrows(ValidacaoException.class, () -> despesaService.listarPelaData(ano,mes));
+
+        assertEquals("Não foi possivel encontrar nenhuma despesa no banco de dados com essa data!",exception.getMessage());
+        verify(despesaRepository,times(1)).listarPelaData(ano,mes);
+    }
 }

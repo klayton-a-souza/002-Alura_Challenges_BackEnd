@@ -198,7 +198,7 @@ class ReceitaServiceTest {
         assertNotEquals(receita.getValor(),dto.valor());
     }
     @Test
-    @DisplayName("Testando se a atualização parcial da receita esta alterando os valor (Descrição) corretamente")
+    @DisplayName("Testando se a atualização total da receita esta alterando os valor corretamente")
     void atualizaçãoTotal(){
         AtualizacaoTotalReceitaDto dto = new AtualizacaoTotalReceitaDto(
                 1L,
